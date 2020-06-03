@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vue.js Pet Depot</title>
+        <script src="https://unpkg.com/vue"></script>
+        <link rel="stylesheet" type="text/css" href="assets/css/app.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="app">	<!--//#B-->
+            <header>
+                <h1 v-text="sitename"></h1> <!--привязка данных для свойства sitename -->
+            </header>
+        </div>
+        <script type="text/javascript">
+            var webstore = new Vue({	//#C
+                el: '#app',	//#D
+                data: { //к параметрам vue добавлен элемент data
+                    sitename: "Vue.js Pet Depot by Maly" //свойство sitename, которое привязано в элементе header
+                }
+            });
+        </script>
+    </body>
+</html>
