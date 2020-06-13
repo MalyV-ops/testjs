@@ -2,7 +2,7 @@
 <html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
     <head>
         <title>Vue.js Pet Depot</title>
-        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/app.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
               crossorigin="anonymous">
@@ -36,9 +36,12 @@
                             {{ product.price | formatPrice }}
                         </p>
                         <!--добавление товара в корзину(обработка нажатия кнопки)-->
-                        <button class="default"
-                                v-on:click="addToCard">
+                        <button class="default" v-on:click="addToCart"
+                                v-if="canAddToCart"> <!--добавление проверки наличия товара-->
                             Add to Cart
+                        </button>
+                        <button class="disabled" v-else> <!--В случае отсутствия товара, кнопка становится не активна-->
+                            Add to cart
                         </button>
                     </div>
                 </div>
@@ -55,7 +58,8 @@
                         title: "Cat Food, 25lb bag",
                         description: "A 25 pound bag of <em>irresistible</em>," + " organic goodness for your cat.",
                         price: 2000,
-                        image: "assets/img/product-fullsize.png"
+                        image: "assets/img/product-fullsize.png",
+                        availableInventory: 6 //количество доступных единиц товара
                     },
                     cart:[]
                 },
@@ -79,13 +83,16 @@
                     }
                 },
                 methods:{
-                    addToCard: function () { //функция добавления товара в корзину
+                    addToCart: function () { //функция добавления товара в корзину
                     this.cart.push(this.product.id);
                     }
                 },
                 computed:{ //количество товаров корзины
                     cartItemCount: function () {
                         return this.cart.length || '';
+                    },
+                    canAddToCart: function () {
+                        return this.product.availableInventory > this.cartItemCount;
                     }
                 },
                 beforeCreate: function () {
