@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
     <head>
         <title>Vue.js Pet Depot</title>
         <script src="https://unpkg.com/vue"></script>
         <link rel="stylesheet" type="text/css" href="assets/css/app.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
               crossorigin="anonymous">
+        <meta charset="UTF-8">
     </head>
     <body>
         <div id="app">
             <header>
-                <h1 v-text="sitename"></h1> <!--привязка данных для свойства sitename -->
+                <div class = "navbar navbar-default">
+                <h1> {{sitename}}</h1> <!--привязка данных для свойства sitename -->
+                    <div class = "nav navbar-nav navbar-right cart">
+                    <span class = "glyphicon glyphicon-shopping-cart">
+                        {{cartItemCount}}                  <!--добавление корзины -->
+                        Checkout
+                    </span>
+                    </div>
+                </div>
+
             </header>
             <main>
                 <div class="row product">
@@ -25,6 +35,11 @@
                         <p class="price">
                             {{ product.price | formatPrice }}
                         </p>
+                        <!--добавление товара в корзину(обработка нажатия кнопки)-->
+                        <button class="default"
+                                v-on:click="addToCard">
+                            Add to Cart
+                        </button>
                     </div>
                 </div>
             </main>
@@ -41,7 +56,8 @@
                         description: "A 25 pound bag of <em>irresistible</em>," + " organic goodness for your cat.",
                         price: 2000,
                         image: "assets/img/product-fullsize.png"
-                    }
+                    },
+                    cart:[]
                 },
                 filters: {
                     //фильтр вывода
@@ -60,6 +76,16 @@
                         else {
                             return "$" + (price/100).toFixed(2);
                         }
+                    }
+                },
+                methods:{
+                    addToCard: function () { //функция добавления товара в корзину
+                    this.cart.push(this.product.id);
+                    }
+                },
+                computed:{ //количество товаров корзины
+                    cartItemCount: function () {
+                        return this.cart.length || '';
                     }
                 },
                 beforeCreate: function () {
