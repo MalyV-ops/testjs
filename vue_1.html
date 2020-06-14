@@ -46,27 +46,40 @@
                             <button class="disabled" v-else> <!--В случае отсутствия товара, кнопка становится не активна-->
                                 Add to cart
                             </button>
+                            <span class="inventory-message"
+                                  v-if="product.availableInventory - cartItemCount === 0">
+                                All Out!
+                            </span>
+                            <span class="inventory-message"
+                                  v-else-if="product.availableInventory - cartItemCount < 5">
+                                Only {{product.availableInventory - cartItemCount}} left!
+                            </span>
+                            <span class="inventory-message"
+                                  v-else>
+                                Buy Now!
+                            </span>
                         </div>
                     </div>
                     <div v-else><!--форма оформления заказа-->
                         <div class="col-md-6">   <!--Привязка свойств firstName, lastName с помощью v-model-->
                             <strong>First Name:</strong>
-                            <input v-model="order.firstName" class="form-control"/>
+                            <!--trim модификатор, убирающий пробельные знаки в начале или конце строки-->
+                            <input v-model.trim="order.firstName" class="form-control"/>
                         </div>
                         <div class="col-md-6">
                             <strong>Last Name:</strong>
-                            <input v-model="order.lastName" class="form-control"/>
+                            <input v-model.trim="order.lastName" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12"><strong>Address:</strong></div>
                             <div class="col-md-12">
-                                <input v-model="order.address" class="form-control"/>
+                                <input v-model.trim="order.address" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12"><strong>City:</strong></div>
                             <div class="col-md-12">
-                                <input v-model="order.city" class="form-control"/>
+                                <input v-model.trim="order.city" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,7 +95,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <strong>Zip / Postal code:</strong>
-                                <input v-model="order.zip" class="form-control"/>
+                                <input v-model.number="order.zip" class="form-control" type="number"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -146,7 +159,7 @@
                         description: "A 25 pound bag of <em>irresistible</em>," + " organic goodness for your cat.",
                         price: 2000,
                         image: "assets/img/product-fullsize.png",
-                        availableInventory: 6 //количество доступных единиц товара
+                        availableInventory: 10 //количество доступных единиц товара
                     },
                     cart:[],
                     showProduct: true, //свойство определяет, нужно ли отображать товар
